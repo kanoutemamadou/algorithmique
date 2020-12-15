@@ -1,4 +1,4 @@
-#Projet 6 algorithmique: Alignement de séquences d'ADN
+# Projet 6 algorithmique: Alignement de séquences d'ADN
 Etudiants:  
 Mamadou KANOUTE  
 Cédric Djiomou  
