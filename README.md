@@ -1,4 +1,4 @@
-# M2 Projet 6 algorithmique : Séquence d'alignement d'ADN
+#Projet 6 algorithmique: Alignement de séquences d'ADN
 Etudiants:  
 Mamadou KANOUTE  
 Cédric Djiomou  
@@ -51,6 +51,8 @@ Les premières colonne et ligne de F sont remplies en commençant par 0, ensuite
 F[1,1] = 0        
 F[1,2] = F[1,1] + d ........ F[1,p] = F[1,p-1] + d      
 F[2,1] = F[1,1] + d ....... F[n,1] = F[n-1,1] + d   
+
+
 ![alt text](Initialisation.png)
 
 A partir de là, on remplit les colonnes au fur et à mesure en appliquant les formules suivantes:
