@@ -84,4 +84,7 @@ A partir de là, on remplit les colonnes au fur et à mesure en appliquant les f
   
 ![alt text](Needleman-Wunsch_pairwise_sequence_alignment.png)
 
+Ainsi `Needleman.Wunsch<-function(d,A,B)` donne:
+
+![alt text](un_meilleur_alignement.png)
 
