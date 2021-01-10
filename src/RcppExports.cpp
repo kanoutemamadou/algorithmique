@@ -5,19 +5,49 @@
 
 using namespace Rcpp;
 
-// rcpp_hello_world
-List rcpp_hello_world();
-RcppExport SEXP _alignSeq_rcpp_hello_world() {
+// similarity_Rcpp
+NumericMatrix similarity_Rcpp(CharacterVector seq1, CharacterVector seq2);
+RcppExport SEXP _alignSeq_similarity_Rcpp(SEXP seq1SEXP, SEXP seq2SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(rcpp_hello_world());
+    Rcpp::traits::input_parameter< CharacterVector >::type seq1(seq1SEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type seq2(seq2SEXP);
+    rcpp_result_gen = Rcpp::wrap(similarity_Rcpp(seq1, seq2));
+    return rcpp_result_gen;
+END_RCPP
+}
+// scoring_Rcpp
+NumericMatrix scoring_Rcpp(int d, CharacterVector seq1, CharacterVector seq2);
+RcppExport SEXP _alignSeq_scoring_Rcpp(SEXP dSEXP, SEXP seq1SEXP, SEXP seq2SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type d(dSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type seq1(seq1SEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type seq2(seq2SEXP);
+    rcpp_result_gen = Rcpp::wrap(scoring_Rcpp(d, seq1, seq2));
+    return rcpp_result_gen;
+END_RCPP
+}
+// getAlignement_Rcpp
+List getAlignement_Rcpp(int d, CharacterVector seq1, CharacterVector seq2);
+RcppExport SEXP _alignSeq_getAlignement_Rcpp(SEXP dSEXP, SEXP seq1SEXP, SEXP seq2SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type d(dSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type seq1(seq1SEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type seq2(seq2SEXP);
+    rcpp_result_gen = Rcpp::wrap(getAlignement_Rcpp(d, seq1, seq2));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_alignSeq_rcpp_hello_world", (DL_FUNC) &_alignSeq_rcpp_hello_world, 0},
+    {"_alignSeq_similarity_Rcpp", (DL_FUNC) &_alignSeq_similarity_Rcpp, 2},
+    {"_alignSeq_scoring_Rcpp", (DL_FUNC) &_alignSeq_scoring_Rcpp, 3},
+    {"_alignSeq_getAlignement_Rcpp", (DL_FUNC) &_alignSeq_getAlignement_Rcpp, 3},
     {NULL, NULL, 0}
 };
 
