@@ -38,6 +38,15 @@ Scoring<-function(d,A,B)
 
 Needleman.Wunsch<-function(d=-1,A,B)
 {
+
+  
+  if (typeof(A) == "character" && length(A) == 1) {
+    A = unlist(strsplit(A, split=""))
+  }
+  
+  if (typeof(B) == "character" && length(B) == 1) {
+    B = unlist(strsplit(B, split=""))
+  }  
   
   S<-similarity(A=A,B=B)
   Fij<-Scoring(d=d,A=A,B=B)
