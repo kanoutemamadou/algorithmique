@@ -17,8 +17,8 @@ using namespace Rcpp; //to use the NumericVector object
 
 NumericMatrix similarity_Rcpp(CharacterVector seq1, CharacterVector seq2)
 {
-    unsigned int n = seq1.size();
-    unsigned int m = seq2.size();
+    int n = seq1.size();
+    int m = seq2.size();
     NumericMatrix S(n, m);
     Rprintf("the value of %i : %f \n", n);
     for(int i = 0; i < n; i++)
@@ -49,8 +49,8 @@ NumericMatrix similarity_Rcpp(CharacterVector seq1, CharacterVector seq2)
 
 NumericMatrix scoring_Rcpp(int d, CharacterVector seq1, CharacterVector seq2)
 {
-    unsigned int n = seq1.size();
-    unsigned int m = seq2.size();  
+    int n = seq1.size();
+    int m = seq2.size();  
     NumericMatrix S(n, m);
     S = similarity_Rcpp(seq1, seq2);
     NumericMatrix Fij(n+1, m+1);
@@ -94,8 +94,8 @@ NumericMatrix scoring_Rcpp(int d, CharacterVector seq1, CharacterVector seq2)
 List getAlignement_Rcpp(int d, CharacterVector seq1, CharacterVector seq2)
 {
 
-    unsigned int n = seq1.size();
-    unsigned int m = seq2.size();
+    int n = seq1.size();
+    int m = seq2.size();
     NumericMatrix S(n, m);
     NumericMatrix Fij(n+1, m+1);
     S = similarity_Rcpp(seq1, seq2);
