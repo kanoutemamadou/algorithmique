@@ -175,7 +175,7 @@ Needleman.WunschV2<-function(gap=-1,A,B)
   # print("F dans V2")
   # print(Fij)
   # cat("\n")
-  return(list(AlignmentA=AlignmentA,AlignmentB=AlignmentB, score = Fij[n+1, n+1]))
+  return(list(AlignmentA=AlignmentA,AlignmentB=AlignmentB, Fij=Fij, score = Fij[n+1, n+1]))
   
 }
 
