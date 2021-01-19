@@ -1,7 +1,3 @@
-
-library(microbenchmark)
-library(ggplot2)
-
 ##  MIT License
 ## Copyright (c) 2020 Projet6 Algorithmique
 
@@ -230,60 +226,5 @@ NeedlemanWunschV2<-function(A,B, match, mismatch, d)
   return(list(AlignmentA=AlignmentA,AlignmentB=AlignmentB, Fij=Fij, score = Fij[n+1, n+1]))
   
 }
-
-
-SimulateSeq = function(n,m) {
-  s <- sample(c("A","C","G","T"),size = n, replace = TRUE)
-  snew <- s
-  for(i in 0:m)
-    
-  {
-    snew <- append(snew, sample(c("A","C","G","T"), 1), sample(length(snew), 1))
-    snew <- snew[-sample(length(snew), 1)]
-    snew[sample(length(snew),1)] <- sample(c("A","C","G","T"), 1)
-    
-  }
-  s <- paste(s, collapse = "")
-  snew <- paste(snew, collapse = "")  
-  return (list(A=s, B=snew))  
-}
-
-timeByFunction = function(n = 1000, match, mismatch, d, fun="V1_R") {
-  v = SimulateSeq(n,1)
-  # print("v")
-  # print(v)
-  if (fun == "V1_R") {
-    t = system.time(NeedlemanWunsch(v$A, v$B, match, mismatch, d))[[1]]
-  } else if(fun == "V2_R") {
-    t = system.time(NeedlemanWunschV2(v$A, v$B, match, mismatch, d))[[1]]
-  } else if(fun == "V1_Cpp") {
-    t = system.time(NeedlemanWunsch_Rcpp(v$A, v$B, match, mismatch, d))[[1]]
-  }  else if(fun == "V2_Cpp") {
-    t = system.time(NeedlemanWunschV2_Rcpp(v$A, v$B, match, mismatch, d))[[1]]
-  } 
-  return (t)
-}
-
-# n <- 1000
-# 
-# res <- microbenchmark(timeByFunction(n, match, mismatch, d, fun="V1_Cpp"), timeByFunction(n, match, mismatch, d, fun="V2_Cpp"), times = 50)
-# autoplot(res)
-
-nbSimus <- 20
-vector_n <- seq(from = 10000, to = 100000, length.out = nbSimus)
-nbRep <- 50
-res_Heap <- data.frame(matrix(0, nbSimus, nbRep + 1))
-colnames(res_Heap) <- c("n", paste0("Rep",1:nbRep))
-
-j <- 1
-for(i in vector_n)
-{
-  res_Heap[j,] <- c(i, replicate(nbRep, timeByFunction(n, match, mismatch, d, fun="V2_Cpp")))  
-  #print(j)
-  j <- j + 1
-}
-
-res <- rowMeans(res_Heap[,-1])
-plot(vector_n, res, type = 'b', xlab = "data length", ylab = "mean time in seconds")
 
 
