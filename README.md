@@ -115,7 +115,7 @@ Les alignements sont:
 ### Fonction de simulation
 A partir de la fonction suivante, on crée deux séquences A et B à aligner
 
-```{r}
+```javascript
 
 match = 1
 mismatch = -1
@@ -145,22 +145,22 @@ print(v)
 On evalue ces algorithmes pour `n = 1000`
 
 et nous obtenos les temps suivants:
-```{r}
+```javascript
 timeByFunction(n, match, mismatch, d, fun="V1_R")
 ```
 ![](V1_R.png)
 
-```{r}
+```javascript
 timeByFunction(n, match, mismatch, d, fun="V2_R")
 ```
 ![](v2_R.png)
 
-```{r}
+```javascript
 timeByFunction(n, match, mismatch, d, fun="V1_Cpp")
 ```
 ![](V1_Cpp.png)
 
-```{r}
+```javascript
 timeByFunction(n, match, mismatch, d, fun="V2_Cpp")
 ```
 ![](V2Cpp.png)
@@ -168,7 +168,7 @@ timeByFunction(n, match, mismatch, d, fun="V2_Cpp")
 
 ## Comparaisons
 
-```{r}
+```javascript
 nbSimus <- 10
 time1 <- 0; time2 <- 0; time3 <- 0; time4 <- 0
 
@@ -183,14 +183,14 @@ for(i in 1:nbSimus){time4 <- time4 + timeByFunction(n, match, mismatch, d, fun="
 **Les différents temps**:     
 ![](time_Nb_sim.png)
 
-```{r}
+```javascript
 #gain R -> Rcpp
 time1/time3
 ```
 ![](R_Rcpp.png)
 
 On remarque que la deuxième méthode est beaucoup plus rapide que la version originale.
-```{r}
+```javascript
 time1/time2
 ```
 ![](time1_sur_time2.png)
@@ -199,7 +199,7 @@ time1/time2
 
 Nous comparons `NeedlemanWunsch_Rcpp` et `NeedlemanWunschV2_Rcpp` pour n = 1000 et n = 10000.     
 
-```{r}
+```javascript
 n <- 1000
 res <- microbenchmark(timeByFunction(n, match, mismatch, d, fun="V1_Cpp"), timeByFunction(n, match, mismatch, d, fun="V2_Cpp"), times = 50)
 autoplot(res)
@@ -207,14 +207,14 @@ autoplot(res)
 
 ![](benchmarch_n_1000.png)
 
-```{r}
+```javascript
 res
 ```
 ![](res_n_1000.png)
 
 
 
-```{r}
+```javascript
 n <- 10000
 res <- microbenchmark(timeByFunction(n, match, mismatch, d, fun="V1_Cpp"), timeByFunction(n, match, mismatch, d, fun="V2_Cpp"), times = 50)
 autoplot(res)
@@ -222,7 +222,7 @@ autoplot(res)
 
 ![](benchmarck_n_10000.png)
 
-```{r}
+```javascript
 res
 ```
 ![](res_n_10000.png)
@@ -232,7 +232,7 @@ res
 
 ## Complexité en temps
 
-```{r}
+```javascript
 nbSimus <- 20
 vector_n <- seq(from = 10000, to = 100000, length.out = nbSimus)
 nbRep <- 50
@@ -255,7 +255,7 @@ plot(vector_n, res, type = 'b', xlab = "data length", ylab = "mean time in secon
 ![](complexity_V1_Cpp.png)
 
 
-```{r}
+```javascript
 nbSimus <- 20
 vector_n <- seq(from = 10000, to = 100000, length.out = nbSimus)
 nbRep <- 50
