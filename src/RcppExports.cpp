@@ -6,48 +6,87 @@
 using namespace Rcpp;
 
 // similarity_Rcpp
-NumericMatrix similarity_Rcpp(CharacterVector seq1, CharacterVector seq2);
-RcppExport SEXP _alignSeq_similarity_Rcpp(SEXP seq1SEXP, SEXP seq2SEXP) {
+NumericMatrix similarity_Rcpp(CharacterVector seq1, CharacterVector seq2, int match, int mismatch);
+RcppExport SEXP _alignSeq_similarity_Rcpp(SEXP seq1SEXP, SEXP seq2SEXP, SEXP matchSEXP, SEXP mismatchSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< CharacterVector >::type seq1(seq1SEXP);
     Rcpp::traits::input_parameter< CharacterVector >::type seq2(seq2SEXP);
-    rcpp_result_gen = Rcpp::wrap(similarity_Rcpp(seq1, seq2));
+    Rcpp::traits::input_parameter< int >::type match(matchSEXP);
+    Rcpp::traits::input_parameter< int >::type mismatch(mismatchSEXP);
+    rcpp_result_gen = Rcpp::wrap(similarity_Rcpp(seq1, seq2, match, mismatch));
     return rcpp_result_gen;
 END_RCPP
 }
 // scoring_Rcpp
-NumericMatrix scoring_Rcpp(int d, CharacterVector seq1, CharacterVector seq2);
-RcppExport SEXP _alignSeq_scoring_Rcpp(SEXP dSEXP, SEXP seq1SEXP, SEXP seq2SEXP) {
+NumericMatrix scoring_Rcpp(CharacterVector seq1, CharacterVector seq2, NumericMatrix S, int match, int mismatch, int d);
+RcppExport SEXP _alignSeq_scoring_Rcpp(SEXP seq1SEXP, SEXP seq2SEXP, SEXP SSEXP, SEXP matchSEXP, SEXP mismatchSEXP, SEXP dSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< int >::type d(dSEXP);
     Rcpp::traits::input_parameter< CharacterVector >::type seq1(seq1SEXP);
     Rcpp::traits::input_parameter< CharacterVector >::type seq2(seq2SEXP);
-    rcpp_result_gen = Rcpp::wrap(scoring_Rcpp(d, seq1, seq2));
+    Rcpp::traits::input_parameter< NumericMatrix >::type S(SSEXP);
+    Rcpp::traits::input_parameter< int >::type match(matchSEXP);
+    Rcpp::traits::input_parameter< int >::type mismatch(mismatchSEXP);
+    Rcpp::traits::input_parameter< int >::type d(dSEXP);
+    rcpp_result_gen = Rcpp::wrap(scoring_Rcpp(seq1, seq2, S, match, mismatch, d));
     return rcpp_result_gen;
 END_RCPP
 }
-// getAlignement_Rcpp
-List getAlignement_Rcpp(int d, CharacterVector seq1, CharacterVector seq2);
-RcppExport SEXP _alignSeq_getAlignement_Rcpp(SEXP dSEXP, SEXP seq1SEXP, SEXP seq2SEXP) {
+// NeedlemanWunsch_Rcpp
+List NeedlemanWunsch_Rcpp(CharacterVector seq1, CharacterVector seq2, int match, int mismatch, int d);
+RcppExport SEXP _alignSeq_NeedlemanWunsch_Rcpp(SEXP seq1SEXP, SEXP seq2SEXP, SEXP matchSEXP, SEXP mismatchSEXP, SEXP dSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< int >::type d(dSEXP);
     Rcpp::traits::input_parameter< CharacterVector >::type seq1(seq1SEXP);
     Rcpp::traits::input_parameter< CharacterVector >::type seq2(seq2SEXP);
-    rcpp_result_gen = Rcpp::wrap(getAlignement_Rcpp(d, seq1, seq2));
+    Rcpp::traits::input_parameter< int >::type match(matchSEXP);
+    Rcpp::traits::input_parameter< int >::type mismatch(mismatchSEXP);
+    Rcpp::traits::input_parameter< int >::type d(dSEXP);
+    rcpp_result_gen = Rcpp::wrap(NeedlemanWunsch_Rcpp(seq1, seq2, match, mismatch, d));
+    return rcpp_result_gen;
+END_RCPP
+}
+// scoringV2_Rcpp
+NumericMatrix scoringV2_Rcpp(CharacterVector seq1, CharacterVector seq2, int match, int mismatch, int d);
+RcppExport SEXP _alignSeq_scoringV2_Rcpp(SEXP seq1SEXP, SEXP seq2SEXP, SEXP matchSEXP, SEXP mismatchSEXP, SEXP dSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< CharacterVector >::type seq1(seq1SEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type seq2(seq2SEXP);
+    Rcpp::traits::input_parameter< int >::type match(matchSEXP);
+    Rcpp::traits::input_parameter< int >::type mismatch(mismatchSEXP);
+    Rcpp::traits::input_parameter< int >::type d(dSEXP);
+    rcpp_result_gen = Rcpp::wrap(scoringV2_Rcpp(seq1, seq2, match, mismatch, d));
+    return rcpp_result_gen;
+END_RCPP
+}
+// NeedlemanWunschV2_Rcpp
+List NeedlemanWunschV2_Rcpp(CharacterVector seq1, CharacterVector seq2, int match, int mismatch, int d);
+RcppExport SEXP _alignSeq_NeedlemanWunschV2_Rcpp(SEXP seq1SEXP, SEXP seq2SEXP, SEXP matchSEXP, SEXP mismatchSEXP, SEXP dSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< CharacterVector >::type seq1(seq1SEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type seq2(seq2SEXP);
+    Rcpp::traits::input_parameter< int >::type match(matchSEXP);
+    Rcpp::traits::input_parameter< int >::type mismatch(mismatchSEXP);
+    Rcpp::traits::input_parameter< int >::type d(dSEXP);
+    rcpp_result_gen = Rcpp::wrap(NeedlemanWunschV2_Rcpp(seq1, seq2, match, mismatch, d));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_alignSeq_similarity_Rcpp", (DL_FUNC) &_alignSeq_similarity_Rcpp, 2},
-    {"_alignSeq_scoring_Rcpp", (DL_FUNC) &_alignSeq_scoring_Rcpp, 3},
-    {"_alignSeq_getAlignement_Rcpp", (DL_FUNC) &_alignSeq_getAlignement_Rcpp, 3},
+    {"_alignSeq_similarity_Rcpp", (DL_FUNC) &_alignSeq_similarity_Rcpp, 4},
+    {"_alignSeq_scoring_Rcpp", (DL_FUNC) &_alignSeq_scoring_Rcpp, 6},
+    {"_alignSeq_NeedlemanWunsch_Rcpp", (DL_FUNC) &_alignSeq_NeedlemanWunsch_Rcpp, 5},
+    {"_alignSeq_scoringV2_Rcpp", (DL_FUNC) &_alignSeq_scoringV2_Rcpp, 5},
+    {"_alignSeq_NeedlemanWunschV2_Rcpp", (DL_FUNC) &_alignSeq_NeedlemanWunschV2_Rcpp, 5},
     {NULL, NULL, 0}
 };
 

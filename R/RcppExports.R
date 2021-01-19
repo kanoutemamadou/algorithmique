@@ -5,12 +5,10 @@
 #'
 #' @param seq1 first sequence
 #' @param seq1 second sequence
-#' @param n length of first sequence
-#' @param m length of second sequence
 #' @return a similarity matrix
 #' @export
-similarity_Rcpp <- function(seq1, seq2) {
-    .Call(`_alignSeq_similarity_Rcpp`, seq1, seq2)
+similarity_Rcpp <- function(seq1, seq2, match, mismatch) {
+    .Call(`_alignSeq_similarity_Rcpp`, seq1, seq2, match, mismatch)
 }
 
 #' Score matrix algorithm using C++
@@ -18,12 +16,10 @@ similarity_Rcpp <- function(seq1, seq2) {
 #'@param d deletion
 #' @param seq1 first sequence
 #' @param seq1 second sequence
-#' @param n length of first sequence
-#' @param m length of second sequence
 #' @return a similarity matrix
 #' @export
-scoring_Rcpp <- function(d, seq1, seq2) {
-    .Call(`_alignSeq_scoring_Rcpp`, d, seq1, seq2)
+scoring_Rcpp <- function(seq1, seq2, S, match, mismatch, d) {
+    .Call(`_alignSeq_scoring_Rcpp`, seq1, seq2, S, match, mismatch, d)
 }
 
 #'get Alignement algorithm using C++
@@ -31,11 +27,33 @@ scoring_Rcpp <- function(d, seq1, seq2) {
 #'@param d deletion
 #' @param seq1 first sequence
 #' @param seq1 second sequence
-#' @param n length of first sequence
-#' @param m length of second sequence
 #' @return a similarity matrix
 #' @export
-getAlignement_Rcpp <- function(d, seq1, seq2) {
-    .Call(`_alignSeq_getAlignement_Rcpp`, d, seq1, seq2)
+NeedlemanWunsch_Rcpp <- function(seq1, seq2, match, mismatch, d) {
+    .Call(`_alignSeq_NeedlemanWunsch_Rcpp`, seq1, seq2, match, mismatch, d)
+}
+
+#' Score matrix algorithm using C++
+#'
+#'@param d deletion
+#' @param seq1 first sequence
+#' @param seq1 second sequence
+#' @return a similarity matrix
+#' @export
+scoringV2_Rcpp <- function(seq1, seq2, match, mismatch, d) {
+    .Call(`_alignSeq_scoringV2_Rcpp`, seq1, seq2, match, mismatch, d)
+}
+
+#' Needleman V2 algorithm using C++
+#'
+#' @param seq1 first sequence
+#' @param seq1 second sequence
+#' @param match matching
+#' @param mismatch mismatching
+#' @param d deletion
+#' @return a similarity matrix
+#' @export
+NeedlemanWunschV2_Rcpp <- function(seq1, seq2, match, mismatch, d) {
+    .Call(`_alignSeq_NeedlemanWunschV2_Rcpp`, seq1, seq2, match, mismatch, d)
 }
 

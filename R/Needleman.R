@@ -1,3 +1,23 @@
+
+library(microbenchmark)
+library(ggplot2)
+
+##  MIT License
+## Copyright (c) 2020 Projet6 Algorithmique
+
+# library(microbenchmark)
+# library(ggplot2)
+
+
+#' Similarity  matrix R
+#'
+#' @description Creating similarity matrix
+#' @param A first sequence
+#' @param B second sequence
+#' @param match matching
+#' @param mismatch mismatching
+#' @return a similarity matrix
+
 similarity<-function(A,B, match, mismatch)
 {
   n<-length(A)
@@ -12,6 +32,17 @@ similarity<-function(A,B, match, mismatch)
   }
   return(S)
 }
+
+
+#' Score  matrix R
+#'
+#' @description Creating score matrix
+#' @param A first sequence
+#' @param B second sequence
+#' @param match matching
+#' @param mismatch mismatching
+#' @param d deletion
+#' @return a score matrix
 
 Scoring<-function(A,B, match, mismatch, d=-1)
 {
@@ -36,7 +67,17 @@ Scoring<-function(A,B, match, mismatch, d=-1)
 }
 
 
-Needleman.Wunsch<-function(A,B, match, mismatch, d=-1)
+#' Alignments R
+#'
+#' @description Get best alignments of two sequences
+#' @param A first sequence
+#' @param B second sequence
+#' @param match matching
+#' @param mismatch mismatching
+#' @param d deletion
+#' @return alignments of two sequence by score max
+
+NeedlemanWunsch<-function(A,B, match, mismatch, d=-1)
 {
 
   
@@ -91,7 +132,18 @@ similarity2 = function(S1, S2, match, mismatch) {
 }
 
 
-ScoringV2<-function(A,B, match, mismatch, gap)
+#' Score  matrix V2 R
+#'
+#' @description Creating score matrix
+#' @param A first sequence
+#' @param B second sequence
+#' @param match matching
+#' @param mismatch mismatching
+#' @param d deletion
+#' @return a score matrix V2
+
+
+ScoringV2<-function(A,B, match, mismatch, d)
 {
   
   # A = c(" ", A)
@@ -106,27 +158,37 @@ ScoringV2<-function(A,B, match, mismatch, gap)
   
   
   matF[1,1] = 0
-  matF[1,2] = gap
-  matF[2,1] = gap
+  matF[1,2] = d
+  matF[2,1] = d
   
   for(i in 2:(n+1)) {
     
     S = similarity2(A[i-1], B[i-1], match, mismatch)
-    matF[i,i] = max(matF[i-1,i] + gap, matF[i,i-1] + gap, matF[i-1,i-1] + S)
+    matF[i,i] = max(matF[i-1,i] + d, matF[i,i-1] + d, matF[i-1,i-1] + S)
     
     if(i+1 <= (n+1)) {
       S = similarity2(A[i], B[i-1], match, mismatch)
-      matF[i+1,i] = max(matF[i,i] + gap, matF[i,i-1] + S)
+      matF[i+1,i] = max(matF[i,i] + d, matF[i,i-1] + S)
       S = similarity2(A[i-1], B[i], match, mismatch)
-      matF[i,i+1] = max(matF[i,i] + gap, matF[i-1,i] + S)
+      matF[i,i+1] = max(matF[i,i] + d, matF[i-1,i] + S)
     }
   }
   return (matF)  
 }
 
 
+#' Alignments V2 R
+#'
+#' @description Get best alignments of two sequences V2
+#' @param A first sequence
+#' @param B second sequence
+#' @param match matching
+#' @param mismatch mismatching
+#' @param d deletion
+#' @return alignments of two sequence by score max V2
 
-Needleman.WunschV2<-function(A,B, match, mismatch, gap)
+
+NeedlemanWunschV2<-function(A,B, match, mismatch, d)
 {
 
   if (typeof(A) == "character" && length(A) == 1) {
@@ -140,7 +202,7 @@ Needleman.WunschV2<-function(A,B, match, mismatch, gap)
   # match = 1
   # mismatch = -1  
    
-  Fij = ScoringV2(A, B, match, mismatch, gap) 
+  Fij = ScoringV2(A, B, match, mismatch, d) 
   n<-length(A)
   m<-length(B)
   AlignmentA<-" "
@@ -155,7 +217,7 @@ Needleman.WunschV2<-function(A,B, match, mismatch, gap)
       AlignmentB<-paste(B[j],AlignmentB)
       i<-i-1
       j<-j-1
-    } else if((i>0)&& (Fij[i+1,j+1]==Fij[i,j+1]+gap)){
+    } else if((i>0)&& (Fij[i+1,j+1]==Fij[i,j+1]+d)){
       AlignmentA<-paste(A[i],AlignmentA)
       AlignmentB<-paste("-",AlignmentB)
       i<-i-1
@@ -173,8 +235,6 @@ Needleman.WunschV2<-function(A,B, match, mismatch, gap)
 SimulateSeq = function(n,m) {
   s <- sample(c("A","C","G","T"),size = n, replace = TRUE)
   snew <- s
-  # ind = sample(1:n,m)
-  # snew[ind] = "-"
   for(i in 0:m)
     
   {
@@ -188,20 +248,42 @@ SimulateSeq = function(n,m) {
   return (list(A=s, B=snew))  
 }
 
-
-getTimeExcecution = function(A, B, match, mismatch, d, fun="V1") {
-  t = 0
-  if (fun == "V1") {
-    t = system.time(Needleman.Wunsch(A, B, match, mismatch, d))[[1]]
-    print(paste("tempps d'excécution première version:", toString(t)))
-  } else {
-    t = system.time(Needleman.WunschV2(A, B, match, mismatch, d))[[1]]
-    print(paste("temps d'excécution deuxième version:", toString(t)))
-  }
+timeByFunction = function(n = 1000, match, mismatch, d, fun="V1_R") {
+  v = SimulateSeq(n,1)
+  # print("v")
+  # print(v)
+  if (fun == "V1_R") {
+    t = system.time(NeedlemanWunsch(v$A, v$B, match, mismatch, d))[[1]]
+  } else if(fun == "V2_R") {
+    t = system.time(NeedlemanWunschV2(v$A, v$B, match, mismatch, d))[[1]]
+  } else if(fun == "V1_Cpp") {
+    t = system.time(NeedlemanWunsch_Rcpp(v$A, v$B, match, mismatch, d))[[1]]
+  }  else if(fun == "V2_Cpp") {
+    t = system.time(NeedlemanWunschV2_Rcpp(v$A, v$B, match, mismatch, d))[[1]]
+  } 
   return (t)
 }
 
+# n <- 1000
+# 
+# res <- microbenchmark(timeByFunction(n, match, mismatch, d, fun="V1_Cpp"), timeByFunction(n, match, mismatch, d, fun="V2_Cpp"), times = 50)
+# autoplot(res)
 
+nbSimus <- 20
+vector_n <- seq(from = 10000, to = 100000, length.out = nbSimus)
+nbRep <- 50
+res_Heap <- data.frame(matrix(0, nbSimus, nbRep + 1))
+colnames(res_Heap) <- c("n", paste0("Rep",1:nbRep))
 
+j <- 1
+for(i in vector_n)
+{
+  res_Heap[j,] <- c(i, replicate(nbRep, timeByFunction(n, match, mismatch, d, fun="V2_Cpp")))  
+  #print(j)
+  j <- j + 1
+}
+
+res <- rowMeans(res_Heap[,-1])
+plot(vector_n, res, type = 'b', xlab = "data length", ylab = "mean time in seconds")
 
 
