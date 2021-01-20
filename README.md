@@ -242,7 +242,7 @@ colnames(res_Heap) <- c("n", paste0("Rep",1:nbRep))
 j <- 1
 for(i in vector_n)
 {
-  res_Heap[j,] <- c(i, replicate(nbRep, timeByFunction(n, match, mismatch, d, fun="V1_Cpp")))  
+  res_Heap[j,] <- c(i, replicate(nbRep, timeByFunction(i, match, mismatch, d, fun="V1_Cpp")))  
   #print(j)
   j <- j + 1
 }
@@ -265,7 +265,7 @@ colnames(res_Heap) <- c("n", paste0("Rep",1:nbRep))
 j <- 1
 for(i in vector_n)
 {
-  res_Heap[j,] <- c(i, replicate(nbRep, timeByFunction(n, match, mismatch, d, fun="V2_Cpp")))  
+  res_Heap[j,] <- c(i, replicate(nbRep, timeByFunction(i, match, mismatch, d, fun="V2_Cpp")))  
   #print(j)
   j <- j + 1
 }
