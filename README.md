@@ -58,7 +58,7 @@ F[1,2] = F[1,1] + d ........ F[1,p] = F[1,p-1] + d
 F[2,1] = F[1,1] + d ....... F[n,1] = F[n-1,1] + d   
 
 
-![alt text](Initialisation.png)
+![alt text](medias/Initialisation.png)
 
 A partir de là, on remplit les colonnes au fur et à mesure en appliquant les formules suivantes:
 ```javascript
@@ -71,7 +71,7 @@ A partir de là, on remplit les colonnes au fur et à mesure en appliquant les f
   F[i,j] = max(left, top, topLeft)
 ```
 
-![alt text](F_construite.png)
+![alt text](medias/F_construite.png)
 
   **Une fois, F entièrement construite, on cherche quel alignement donne le score maximal**.     
   Pour cela, on cherche le score maximal donné.On voit bien ici que c'est `F[n,p]`. 
@@ -87,11 +87,11 @@ A partir de là, on remplit les colonnes au fur et à mesure en appliquant les f
   - à la position `(i, j-1)` alors `B[j]` est aligné avec un trou, c'est à dire le symbole  -.
   
   
-![alt text](Needleman-Wunsch_pairwise_sequence_alignment.png)
+![alt text](medias/Needleman-Wunsch_pairwise_sequence_alignment.png)
 
 Ainsi `Needleman.Wunsch<-function(d,A,B)` donne:
 
-![alt text](un_meilleur_alignement.png)                         
+![alt text](medias/un_meilleur_alignement.png)                         
 
 
 ## Version améliorée
@@ -102,10 +102,10 @@ Deux méthodes sont proposées en fonction de la longueur des deux séquences(m�
 On s'interessera au cas où on a des séquences de même longeur. Dans ce cas on passe d'une complexité **O(mn)** à une complexité linéaire **O(n)**.
 
 On remplit la diagonale, on prend ensuite les diagonales en haut en en bas comme illustré dans la figure suivante.
-![alt text](V2_Fij.png)
+![alt text](medias/V2_Fij.png)
 
 Les alignements sont:                                                                     
-![alt text](Alignement_v2.png)
+![alt text](medias/Alignement_v2.png)
 
 
 
@@ -148,22 +148,22 @@ et nous obtenos les temps suivants:
 ```javascript
 timeByFunction(n, match, mismatch, d, fun="V1_R")
 ```
-![](V1_R.png)
+![](medias/V1_R.png)
 
 ```javascript
 timeByFunction(n, match, mismatch, d, fun="V2_R")
 ```
-![](v2_R.png)
+![](medias/v2_R.png)
 
 ```javascript
 timeByFunction(n, match, mismatch, d, fun="V1_Cpp")
 ```
-![](V1_Cpp.png)
+![](medias/V1_Cpp.png)
 
 ```javascript
 timeByFunction(n, match, mismatch, d, fun="V2_Cpp")
 ```
-![](V2Cpp.png)
+![](medias/V2Cpp.png)
 
 
 ## Comparaisons
@@ -181,21 +181,40 @@ for(i in 1:nbSimus){time4 <- time4 + timeByFunction(n, match, mismatch, d, fun="
 
 ### Rcpp est au moins 51192  fois plus rapide que R pour nos deux algorithmes.
 **Les différents temps**:     
-![](time_Nb_sim.png)
+![](medias/time_Nb_sim.png)
 
 ```javascript
 #gain R -> Rcpp
 time1/time3
 ```
-![](R_Rcpp.png)
+![](medias/R_Rcpp.png)
 
 On remarque que la deuxième méthode est beaucoup plus rapide que la version originale.
 ```javascript
 time1/time2
 ```
-![](time1_sur_time2.png)
+![](medias/time1_sur_time2.png)
 
 ## Microblenchmark
+
+
+
+### En R
+
+Nous comparons `NeedlemanWunsch` et `NeedlemanWunschV2` pour n = 1000.
+
+```javascript
+n <- 1000
+res <- microbenchmark(timeByFunction(n, match, mismatch, d, fun="V1_R"), timeByFunction(n, match, mismatch, d, fun="V2_R"), times = 50)
+autoplot(res)
+```
+
+![](medias/Microbenchmark.png)
+
+
+
+
+### En C++
 
 Nous comparons `NeedlemanWunsch_Rcpp` et `NeedlemanWunschV2_Rcpp` pour n = 1000 et n = 10000.     
 
@@ -205,12 +224,12 @@ res <- microbenchmark(timeByFunction(n, match, mismatch, d, fun="V1_Cpp"), timeB
 autoplot(res)
 ```
 
-![](benchmarch_n_1000.png)
+![](medias/benchmarch_n_1000.png)
 
 ```javascript
 res
 ```
-![](res_n_1000.png)
+![](medias/res_n_1000.png)
 
 
 
@@ -220,17 +239,70 @@ res <- microbenchmark(timeByFunction(n, match, mismatch, d, fun="V1_Cpp"), timeB
 autoplot(res)
 ```
 
-![](benchmarck_n_10000.png)
+![](medias/benchmarck_n_10000.png)
 
 ```javascript
 res
 ```
-![](res_n_10000.png)
+![](medias/res_n_10000.png)
 
 
 
+## Complexité en temps en R
 
-## Complexité en temps
+### Version originale
+
+```javascript
+nbSimus <- 20
+vector_n <- seq(from = 100, to = 200, length.out = nbSimus)
+nbRep <- 50
+res_Heap <- data.frame(matrix(0, nbSimus, nbRep + 1))
+colnames(res_Heap) <- c("n", paste0("Rep",1:nbRep))
+
+j <- 1
+for(i in vector_n)
+{
+  res_Heap[j,] <- c(i, replicate(nbRep, timeByFunction(i, match, mismatch, d, fun="V1_R")))  
+  #print(j)
+  j <- j + 1
+}
+
+res <- rowMeans(res_Heap[,-1])
+plot(vector_n, res, type = 'b', xlab = "data length", ylab = "mean time in seconds")
+
+```
+
+![](medias/Complexité_Version_naive_R.png)
+
+
+### Version améliorée
+
+```javascript
+nbSimus <- 20
+vector_n <- seq(from = 100, to = 200, length.out = nbSimus)
+nbRep <- 50
+res_Heap <- data.frame(matrix(0, nbSimus, nbRep + 1))
+colnames(res_Heap) <- c("n", paste0("Rep",1:nbRep))
+
+j <- 1
+for(i in vector_n)
+{
+  res_Heap[j,] <- c(i, replicate(nbRep, timeByFunction(i, match, mismatch, d, fun="V2_R")))  
+  #print(j)
+  j <- j + 1
+}
+
+res <- rowMeans(res_Heap[,-1])
+plot(vector_n, res, type = 'b', xlab = "data length", ylab = "mean time in seconds")
+
+```
+
+![](medias/Complexité_version_améliorée_R.png)
+
+
+## Complexité en temps en C++
+
+### Version originale
 
 ```javascript
 nbSimus <- 20
@@ -252,8 +324,9 @@ plot(vector_n, res, type = 'b', xlab = "data length", ylab = "mean time in secon
 
 ```
 
-![](complexity_V1_Cpp.png)
+![](medias/complexity_V1_Cpp.png)
 
+### Version améliorée
 
 ```javascript
 nbSimus <- 20
@@ -275,5 +348,5 @@ plot(vector_n, res, type = 'b', xlab = "data length", ylab = "mean time in secon
 
 ```
 
-![](Complexity_V2_Cpp.png)
+![](medias/Complexity_V2_Cpp.png)
 
